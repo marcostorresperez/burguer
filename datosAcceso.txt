@@ -1,0 +1,12 @@
+Marcos Torres
+IP: 10.100.23.208
+Contraseña: 1234
+
+
+Nombre BD: proves1
+
+Usuari: admin
+Contraseña: admin
+
+Nombre modulo: burguer
+

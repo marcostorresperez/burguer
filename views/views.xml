@@ -1,0 +1,979 @@
+<odoo>
+    <data>
+        <!-- PRODUCTOR -->
+        <record model="ir.ui.view" id="burguer.productortree">
+            <field name="name">Productor</field>
+            <field name="model">burguer.productor</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="template==True">
+                    <field name="name"/>
+                    <field name="produccion"/>
+                    <field name="recurso"/>
+                    <field name="nivel"/>
+                    <field name="description"/>
+                    <field name="nombre_jugador"/>
+                    <field name="image_small" widget="image"/>
+                    <field name="template"/>
+
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="burguer.productorform">
+            <field name="name">Productor form</field>
+            <field name="model">burguer.productor</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="background:#7C7BAD">
+                        <field style="float:left;color:white;font-size:25px;margin-right:50%;padding: 10px"
+                               name="name"/>
+                    </header>
+                    <sheet>
+                        <group>
+
+                            <field name="produccion"/>
+                            <field name="recurso"/>
+                            <field name="nivel"/>
+                            <field name="description"/>
+                            <field name="image_small" widget="image"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="burguer.action_productor">
+            <field name="name">Productor</field>
+            <field name="res_model">burguer.productor</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <record model="ir.ui.view" id="burguer.productor_kanban_view">
+            <field name="name">Kanban Productor</field>
+            <field name="model">burguer.productor</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="image_small"/>
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="produccion"/>
+                    <field name="recurso"/>
+                    <field name="template"/>
+                    <field name="nivel"/>
+                    <field name="description"/>
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="
+                            oe_kanban_card
+                            oe_kanban_global_click
+                            o_kanban_record_has_image_fill
+                            #{kanban_color(record.color.raw_value)}">
+                                <div class="oe_burguer_kanban_div_image">
+                                    <img class="oe_kanban_image"
+                                         t-att-alt="record.name.value"
+                                         t-att-src="kanban_image('burguer.productor', 'image_small', record.id.value)"/>
+                                    <button name="level_up" type="object" string="Nivel"
+                                            class="oe_burguer_kanban_button">Subir Nivel
+                                    </button>
+                                    <button name="level_cero" type="object" string="Nivel"
+                                            class="oe_burguer_kanban_button">Restaurar
+                                    </button>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <a type="open">
+                                        <h4>
+                                            <field name="name"/>
+                                        </h4>
+                                    </a>
+                                    <ul>
+                                        <li>Nivel:
+                                            <field name="nivel"/>
+                                        </li>
+                                        <li>Nombre:
+                                            <field name="name"/>
+                                        </li>
+                                        <li>Produccion:
+                                            <field name="produccion"/>
+                                        </li>
+                                        <li>Descripcion:
+                                            <field name="description"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <!-- ALMACEN -->
+        <record model="ir.ui.view" id="burguer.almacen_tree">
+            <field name="name">Almacen</field>
+            <field name="model">burguer.almacen</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="stock>=capacidad" decoration-success="capacidad>=stock">
+                    <field name="name"/>
+                    <field name="capacidad"/>
+                    <field name="stock"/>
+                    <field name="description"/>
+                    <field name="nivel"/>
+                    <field name="raws"/>
+                    <field name="template"/>
+                    <field name="image_small" widget="image"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="burguer.almacenform">
+            <field name="name">Almacen form</field>
+            <field name="model">burguer.almacen</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="background:#7C7BAD">
+                        <field style="float:left;color:white;font-size:25px;margin-right:50%;padding: 10px"
+                               name="name"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="capacidad"/>
+                            <field name="stock"/>
+                            <field name="description"/>
+                            <field name="nivel"/>
+                            <field name="raws"/>
+                            <field name="image_small" widget="image"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="burguer.action_almacen">
+            <field name="name">Almacen</field>
+            <field name="res_model">burguer.almacen</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <record model="ir.ui.view" id="burguer.almacen_kanban_view">
+            <field name="name">Kanban Almacen</field>
+            <field name="model">burguer.almacen</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="capacidad"/>
+                    <field name="stock"/>
+                    <field name="nivel"/>
+                    <field name="raws"/>
+                    <field name="description"/>
+                    <field name="image_small"/>
+                    <field name="template"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="
+                            oe_kanban_card
+                            oe_kanban_global_click
+                            o_kanban_record_has_image_fill">
+                                <div class="oe_burguer_kanban_div_image">
+                                    <img class="oe_kanban_image"
+                                         t-att-alt="record.name.value"
+                                         t-att-src="kanban_image('burguer.almacen', 'image_small', record.id.value)"/>
+                                    <button name="level_up" type="object" string="Nivel"
+                                            class="oe_burguer_kanban_button">Subir Nivel
+                                    </button>
+                                    <button name="level_cero" type="object" string="Nivel"
+                                            class="oe_burguer_kanban_button">Restaurar
+                                    </button>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <a type="open">
+                                        <h4>
+                                            <field name="name"/>
+                                        </h4>
+                                    </a>
+                                    <ul>
+                                        <li>Nivel:
+                                            <field name="nivel"/>
+                                        </li>
+                                        <li>Nombre:
+                                            <field name="name"/>
+                                        </li>
+                                        <li>Capacidad:
+                                            <field name="capacidad"/>
+                                        </li>
+                                        <li>Stock:
+                                            <field name="stock"/>
+                                        </li>
+                                        <li>Descripcion:
+                                            <field name="description"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <!-- TIENDA -->
+        <record model="ir.ui.view" id="burguer.tiendatree">
+            <field name="name">Tienda tree</field>
+            <field name="model">burguer.tienda</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="nivel"/>
+                    <field name="produccion"/>
+                    <field name="image_small" widget="image"/>
+                    <field name="template"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="burguer.tiendaform">
+            <field name="name">Tienda form</field>
+            <field name="model">burguer.tienda</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="background:#7C7BAD">
+                        <field style="float:left;color:white;font-size:25px;margin-right:50%;padding: 10px"
+                               name="name"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="nivel"/>
+                            <field name="produccion"/>
+                            <field name="image_small" widget="image"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="burguer.action_tienda">
+            <field name="name">Tienda</field>
+            <field name="res_model">burguer.tienda</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <record model="ir.ui.view" id="burguer.tienda_kanban_view">
+            <field name="name">Kanban Tienda</field>
+            <field name="model">burguer.tienda</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="produccion"/>
+                    <field name="nivel"/>
+                    <field name="image_small"/>
+                    <field name="template"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="
+                            oe_kanban_card
+                            oe_kanban_global_click
+                            o_kanban_record_has_image_fill">
+                                <div class="oe_burguer_kanban_div_image">
+                                    <img class="oe_kanban_image"
+                                         t-att-alt="record.name.value"
+                                         t-att-src="kanban_image('burguer.tienda', 'image_small', record.id.value)"/>
+                                    <button name="level_up" type="object" string="Nivel"
+                                            class="oe_burguer_kanban_button">Subir Nivel
+                                    </button>
+                                    <button name="level_cero" type="object" string="Nivel"
+                                            class="oe_burguer_kanban_button">Restaurar
+                                    </button>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <a type="open">
+                                        <h4>
+                                            <field name="name"/>
+                                        </h4>
+                                    </a>
+                                    <ul>
+                                        <li>Nivel:
+                                            <field name="nivel"/>
+                                        </li>
+                                        <li>Nombre:
+                                            <field name="name"/>
+                                        </li>
+                                        <li>Produccion:
+                                            <field name="produccion"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- RAW -->
+        <record model="ir.ui.view" id="burguer.rawtree">
+            <field name="name">Raw</field>
+            <field name="model">burguer.raw</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="image_small" widget="image"/>
+                    <field name="template"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="burguer.rawform">
+            <field name="name">Raw form</field>
+            <field name="model">burguer.raw</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="background:#7C7BAD">
+                        <field style="float:left;color:white;font-size:25px;margin-right:50%;padding: 10px"
+                               name="name"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="image_small" widget="image"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="burguer.action_raw">
+            <field name="name">Raw</field>
+            <field name="res_model">burguer.raw</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <record model="ir.ui.view" id="burguer.raw_kanban_view">
+            <field name="name">Kanban Productor</field>
+            <field name="model">burguer.raw</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="image_small"/>
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="template"/>
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="
+                            oe_kanban_card
+                            oe_kanban_global_click
+                            o_kanban_record_has_image_fill">
+                                <div class="oe_burguer_kanban_div_image">
+                                    <img class="oe_kanban_image"
+                                         t-att-alt="record.name.value"
+                                         t-att-src="kanban_image('burguer.tienda', 'image_small', record.id.value)"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <a type="open">
+                                        <h4>
+                                            <field name="name"/>
+                                        </h4>
+                                    </a>
+                                    <ul>
+                                        <li>Nombre:
+                                            <field name="name"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- RAWS -->
+        <record model="ir.ui.view" id="burguer.rawstree">
+            <field name="name">burguer raws</field>
+            <field name="model">burguer.raws</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="almacen"/>
+                    <field name="raw"/>
+                    <field name="cantidad"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="burguer.rawsform">
+            <field name="name">Raws form</field>
+            <field name="model">burguer.raws</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="background:#7C7BAD">
+                        <field style="float:left;color:white;font-size:25px;margin-right:50%;padding: 10px"
+                               name="name"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="almacen"/>
+                            <field name="raw"/>
+                            <field name="cantidad"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="burguer.action_raws">
+            <field name="name">Raws</field>
+            <field name="res_model">burguer.raws</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <!-- COSTE PRODUCTOR -->
+        <record model="ir.ui.view" id="burguer.coste_productortree">
+            <field name="name">burguer coste_productor</field>
+            <field name="model">burguer.coste_productor</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="productor"/>
+                    <field name="dinero"/>
+                    <field name="cantidad"/>
+                    <field name="tiempo"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="burguer.costeproductorform">
+            <field name="name">Coste Productor form</field>
+            <field name="model">burguer.coste_productor</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="background:#7C7BAD">
+                        <field style="float:left;color:white;font-size:25px;margin-right:50%;padding: 10px"
+                               name="name"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="productor"/>
+                            <field name="dinero"/>
+                            <field name="cantidad"/>
+                            <field name="tiempo"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="burguer.action_coste_productor">
+            <field name="name">burguer coste_productor</field>
+            <field name="res_model">burguer.coste_productor</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- COSTE ALMACEN -->
+        <record model="ir.ui.view" id="burguer.coste_almacentree">
+            <field name="name">burguer coste_almacen</field>
+            <field name="model">burguer.coste_almacen</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="almacen"/>
+                    <field name="dinero"/>
+                    <field name="cantidad"/>
+                    <field name="tiempo"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="burguer.costealmacenform">
+            <field name="name">Coste Almacen form</field>
+            <field name="model">burguer.coste_almacen</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="background:#7C7BAD">
+                        <field style="float:left;color:white;font-size:25px;margin-right:50%;padding: 10px"
+                               name="name"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="almacen"/>
+                            <field name="dinero"/>
+                            <field name="cantidad"/>
+                            <field name="tiempo"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="burguer.action_coste_almacen">
+            <field name="name">burguer coste_almacen</field>
+            <field name="res_model">burguer.coste_almacen</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- COSTE TIENDA -->
+        <record model="ir.ui.view" id="burguer.coste_tiendatree">
+            <field name="name">burguer coste_tienda</field>
+            <field name="model">burguer.coste_tienda</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="tienda"/>
+                    <field name="dinero"/>
+                    <field name="cantidad"/>
+                    <field name="tiempo"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="burguer.costetiendaform">
+            <field name="name">Coste Tienda form</field>
+            <field name="model">burguer.coste_tienda</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="background:#7C7BAD">
+                        <field style="float:left;color:white;font-size:25px;margin-right:50%;padding: 10px"
+                               name="name"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="tienda"/>
+                            <field name="dinero"/>
+                            <field name="cantidad"/>
+                            <field name="tiempo"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="burguer.action_coste_tienda">
+            <field name="name">burguer coste_tienda</field>
+            <field name="res_model">burguer.coste_tienda</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- JUGADOR -->
+        <record model="ir.ui.view" id="burguer.jugadortree">
+            <field name="name">Jugador</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="dinero"/>
+                    <field name="image"/>
+                    <field name="clan"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="burguer.jugadorform">
+            <field name="name">Tienda Form</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="background:#7C7BAD">
+                        <field style="float:left;color:white;font-size:25px;margin-right:50%;padding: 10px"
+                               name="name"/>
+                    </header>
+                    <sheet>
+                        <group string="Info Recursos">
+                            <field name="name"/>
+                            <field name="dinero"/>
+                        </group>
+                        <notebook>
+                            <page string="Tienda">
+                                <field name="tiendas">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="name"/>
+                                        <field name="nivel"/>
+                                        <field name="produccion"/>
+                                        <field name="image_small"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div t-attf-class="
+                            oe_kanban_card
+                            oe_kanban_global_click
+                              o_kanban_record_has_image_fill"
+                                                >
+                                                    <a type="open" style="float:left">
+                                                        <img class="oe_kanban_image"
+                                                             t-att-src="kanban_image('burguer.tienda','image_small', record.id.raw_value)"/>
+                                                    </a>
+                                                    <div class="oe_kanban_details">
+                                                        <a type="open">
+                                                            <h4>
+                                                                <field name="name"/>
+                                                            </h4>
+                                                        </a>
+                                                        <ul>
+                                                            <li>Nivel
+                                                            <field name="nivel"/>
+                                                            </li>
+                                                            <li>Produccion
+                                                                <field name="produccion"/>
+
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="Productor">
+                                <field name="productor">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="name"/>
+                                        <field name="jugador"/>
+                                        <field name="nivel"/>
+                                        <field name="image_small"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div t-attf-class="
+                            oe_kanban_card
+                            oe_kanban_global_click
+                            o_kanban_record_has_image_fill"
+                                                >
+                                                    <a type="open" style="float:left">
+                                                        <img class="oe_kanban_image"
+                                                             t-att-src="kanban_image('burguer.productor','image_small', record.id.raw_value)"/>
+                                                    </a>
+                                                    <div class="oe_kanban_details">
+                                                        <a type="open">
+                                                            <h4>
+                                                                <field name="name"/>
+                                                            </h4>
+                                                        </a>
+                                                        <ul>
+                                                            <li>Produccion:
+                                                                <field name="produccion"/>
+                                                            </li>
+                                                            <li>Nivel:
+                                                                <field name="nivel"/>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="Almacen">
+                                <field name="almacenes">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="name"/>
+                                        <field name="capacidad"/>
+                                        <field name="stock"/>
+                                        <field name="nivel"/>
+                                        <field name="image_small"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div t-attf-class="
+                            oe_kanban_card
+                            oe_kanban_global_click
+                              o_kanban_record_has_image_fill"
+                                                >
+                                                    <a type="open" style="float:left">
+                                                        <img class="oe_kanban_image"
+                                                             t-att-src="kanban_image('burguer.almacen','image_small', record.id.raw_value)"/>
+                                                    </a>
+                                                    <div class="oe_kanban_details">
+                                                        <a type="open">
+                                                            <h4>
+                                                                <field name="name"/>
+                                                            </h4>
+                                                        </a>
+                                                        <ul>
+                                                            <li>Capacidad:
+                                                                <field name="capacidad"/>
+
+                                                            </li>
+                                                            <li>Stock:
+                                                                <field name="stock"/>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                        </notebook>
+                        <footer>
+                            <button name="add_tienda" type="object" string="Añadir Tienda"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window.view" id="burguer.jugador_action_tree">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="burguer.jugadortree"/>
+            <field name="act_view_id" ref="burguer.action_jugador"/>
+        </record>
+         <record model="ir.actions.act_window.view" id="burguer.jugador_action_form">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="burguer.jugadorform"/>
+            <field name="act_view_id" ref="burguer.action_jugador"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="burguer.action_jugador">
+            <field name="name">Jugador</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"> [('es_jugador','=',True)]</field>
+            <field name="context">{'default_es_jugador':True}</field>
+        </record>
+
+
+        <!-- CLAN -->
+        <record model="ir.ui.view" id="burguer.clantree">
+            <field name="name">Clan</field>
+            <field name="model">burguer.clan</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="players"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="burguer.clanform">
+            <field name="name">Jugador form</field>
+            <field name="model">burguer.clan</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="background:#7C7BAD">
+                        <field style="float:left;color:white;font-size:25px;margin-right:50%;padding: 10px"
+                               name="name"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="players"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="burguer.action_clan">
+            <field name="name">Clan</field>
+            <field name="res_model">burguer.clan</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"></field>
+        </record>
+
+        <!-- GUERRA -->
+        <record model="ir.ui.view" id="burguer.guerratree">
+            <field name="name">Guerra</field>
+            <field name="model">burguer.guerra</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="atacante"/>
+                    <field name="defensor"/>
+                    <field name="raws_ataque"/>
+                    <field name="raws_defensa"/>
+                    <field name="estado"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="burguer.guerraform">
+            <field name="name">Guerra form</field>
+            <field name="model">burguer.guerra</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="background:#7C7BAD">
+                        <field style="float:left;color:white;font-size:25px;margin-right:50%;padding: 10px"
+                               name="name"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="atacante"/>
+                            <field name="defensor"/>
+                            <field name="raws_ataque"/>
+                            <field name="raws_defensa"/>
+                            <field name="estado"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="burguer.action_guerra">
+            <field name="name">Guerra</field>
+            <field name="res_model">burguer.guerra</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- EVENTO Y CALENDAR -->
+        <record model="ir.ui.view" id="burguer.evento1list">
+            <field name="name" >evento list</field>
+            <field name="model">burguer.evento</field>
+            <field name="arch" type="xml">
+                <calendar date_start="fecha_inicio" color="name" date_stop="fecha_fin">
+                    <field name="name"/>
+                    <field name="jugador"/>
+                    <field name="fecha_inicio"/>
+                    <field name="fecha_fin"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="burguer.evento1search">
+            <field name="name">evento search</field>
+            <field name="model">burguer.evento</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="jugador"/>
+                    <field name="fecha_inicio"/>
+                    <field name="fecha_fin"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="burguer.evento1form">
+            <field name="name" >evento form</field>
+            <field name="model">burguer.evento</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <header>
+                            <field name="name" string = "¡A Cocinar!" style="margin-right:550px;"/>
+                        </header>
+                        <group>
+                            <group string="Jugador" style="text-align:center">
+                                <field name="jugador"/>
+                            </group>
+                            <group string="Fecha" style="text-align:center">
+                                <field name="fecha_inicio" string="Fecha inicial para la acción"/>
+                                <field name="fecha_fin" string="Fecha final para la acción"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="burguer.eventotree">
+            <field name="name" >evento tree</field>
+            <field name="model">burguer.evento</field>
+            <field name="arch" type="xml">
+                <tree>
+                <field name="name" string="Batalla"/>
+                <field name="jugador" string="Jugador" widget="many2many_tags"/>
+                <field name="fecha_inicio"  string="Fecha inicial para la batalla"/>
+                <field name="fecha_fin" string="Fecha final para la batalla"/>
+            </tree>
+            </field>
+        </record>
+
+         <record model="ir.actions.act_window" id="burguer.action_evento">
+      <field name="name">Evento</field>
+      <field name="res_model">burguer.evento</field>
+      <field name="view_mode">tree,calendar,form</field>
+    </record>
+
+        <!-- ACTION SERVER -
+        <record model="ir.actions.server" id="burguer.actionserver">
+      <field name="name">burguer server</field>
+      <field name="model_id" ref="model_burguer_burguer"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+
+
+
+
+        <!-- MENU Y SUBMENUS -->
+        <menuitem name="Burguer" id="burguer.menu_root"/>
+
+        <menuitem name="Costes" id="burguer.costes" parent="burguer.menu_root"/>
+        <menuitem name="Social" id="burguer.social" parent="burguer.menu_root"/>
+        <menuitem name="Edificios" id="burguer.edificios" parent="burguer.menu_root"/>
+        <menuitem name="Recursos" id="burguer.recursos" parent="burguer.menu_root"/>
+
+
+        <!-- ACTIONS EDIFICIOS -->
+        <menuitem name="Tienda" id="burguer.tienda" parent="burguer.edificios" action="burguer.action_tienda"/>
+        <menuitem name="Productor" id="burguer.menu_productor" parent="burguer.edificios"
+                  action="burguer.action_productor"/>
+        <menuitem name="Almacen" id="burguer.almacen" parent="burguer.edificios" action="burguer.action_almacen"/>
+
+        <!-- ACTIONS RECURSOS -->
+        <menuitem name="Raw" id="burguer.raw" parent="burguer.recursos" action="burguer.action_raw"/>
+        <menuitem name="Raws" id="burguer.raws" parent="burguer.recursos" action="burguer.action_raws"/>
+
+        <!-- ACTIONS COSTES -->
+        <menuitem name="Coste Productor" id="burguer.coste_productor" parent="burguer.costes"
+                  action="burguer.action_coste_productor"/>
+        <menuitem name="Coste Almacen" id="burguer.coste_almacen" parent="burguer.costes"
+                  action="burguer.action_coste_almacen"/>
+        <menuitem name="Coste Tienda" id="burguer.coste_tienda" parent="burguer.costes"
+                  action="burguer.action_coste_tienda"/>
+
+        <!-- ACTIONS SOCIAL -->
+        <menuitem name="Jugador" id="burguer.jugador" parent="burguer.social" action="burguer.action_jugador"/>
+        <menuitem name="Clan" id="burguer.clan" parent="burguer.social" action="burguer.action_clan"/>
+        <menuitem name="Guerra" id="burguer.guerra" parent="burguer.social" action="burguer.action_guerra"/>
+        <menuitem name="Calendario" id="burguer.evento" parent="burguer.social" action="burguer.action_evento"/>
+
+        <!-- explicit list view definition -->
+        <!--
+        <record model="ir.ui.view" id="burguer.list">
+          <field name="name">burguer list</field>
+          <field name="model">burguer.burguer</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="name"/>
+              <field name="value"/>
+              <field name="value2"/>
+            </tree>
+          </field>
+        </record>
+        -->
+
+        <!-- actions opening views on models -->
+        <!--
+        <record model="ir.actions.act_window" id="burguer.action_window">
+          <field name="name">burguer window</field>
+          <field name="res_model">burguer.burguer</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+        -->
+
+        <!-- server action to the one above -->
+        <!--
+        <record model="ir.actions.server" id="burguer.action_server">
+          <field name="name">burguer server</field>
+          <field name="model_id" ref="model_burguer_burguer"/>
+          <field name="state">code</field>
+          <field name="code">
+            action = {
+              "type": "ir.actions.act_window",
+              "view_mode": "tree,form",
+              "res_model": self._name,
+            }
+          </field>
+        </record>
+        -->
+
+        <!-- Top menu item -->
+        <!--
+        <menuitem name="burguer" id="burguer.menu_root"/>
+        -->
+        <!-- menu categories -->
+        <!--
+        <menuitem name="Menu 1" id="burguer.menu_1" parent="burguer.menu_root"/>
+        <menuitem name="Menu 2" id="burguer.menu_2" parent="burguer.menu_root"/>
+        -->
+        <!-- actions -->
+        <!--
+        <menuitem name="List" id="burguer.menu_1_list" parent="burguer.menu_1"
+                  action="burguer.action_window"/>
+        <menuitem name="Server to list" id="burguer" parent="burguer.menu_2"
+                  action="burguer.action_server"/>
+        -->
+
+    </data>
+</odoo>

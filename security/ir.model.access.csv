@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_burguer_productor,burguer.productor,model_burguer_productor,,1,1,1,1
+access_burguer_almacen,burguer.almacen,model_burguer_almacen,,1,1,1,1
+access_burguer_tienda,burguer.tienda,model_burguer_tienda,,1,1,1,1
+access_burguer_raw,burguer.raw,model_burguer_raw,,1,1,1,1
+access_burguer_raws,burguer.raws,model_burguer_raws,,1,1,1,1
+access_burguer_coste_productor,burguer.coste_productor,model_burguer_coste_productor,,1,1,1,1
+access_burguer_coste_almacen,burguer.coste_almacen,model_burguer_coste_almacen,,1,1,1,1
+access_burguer_coste_tienda,burguer.coste_tienda,model_burguer_coste_tienda,,1,1,1,1
+access_burguer_jugador,burguer.jugador,model_burguer_jugador,,1,1,1,1,
+access_burguer_clan,burguer.clan,model_burguer_clan,,1,1,1,1
+access_burguer_guerra,burguer.guerra,model_burguer_guerra,,1,1,1,1
+access_burguer_evento,burguer.evento,model_burguer_evento,,1,1,1,1
